@@ -16,6 +16,7 @@
 - [사용기술](#사용기술)
 - [API 문서](#API-문서)
 - [구현 기능](#구현기능)
+- [테스트코드](#테스트코드)
 - [시스템 구성도](#시스템-구성도)
 - [ERD](#ERD)
 - [TIL 및 회고](#프로젝트-관리-및-회고)
@@ -112,11 +113,8 @@
     - 리뷰 등록시 Redis에 캐싱되어있는 해당맛집의 데이터를 삭제하여 최신화되도록 했습니다.
 </details>
 
-<details>
-  <summary>테스트코드 작성</summary>
-  
+## 테스트코드
 ![img.png](img.png)
-</details>
 
 ## 시스템 구성도
 ![시스템 구성도](./readme_source/system_diagram/system_diagram.png)
