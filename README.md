@@ -3,22 +3,22 @@
 ## 팀 소개
 <div align="center">
 
-| <img src="./readme_source/team/team1.png" width="140" height="140">  |        <img src="./readme_source/team/team2.png" width="140" height="140">         |  <img src="./readme_source/team/team3.png" width="140" height="140">  |  <img src="./readme_source/team/team4.png" width="140" height="140">  |  
-|:--------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|:---------------------------------------------------------------------:|:---------------------------------------------------------------------:|  
-|                               Back-End                               |                                      Back-End                                      |                               Back-End                                |                               Back-End                                |                                                                                                 |
-|                  [이준규](https://github.com/junkyu92)                  |                         [이현정](https://github.com/12hyeon)                          |                  [최승호](https://github.com/madst0614)                  |                  [조현수](https://github.com/HyunsooZo)                  |
+| <img src="./readme_source/team/team1.png" width="140" height="140"> |        <img src="./readme_source/team/team2.png" width="140" height="140">         |  <img src="./readme_source/team/team3.png" width="140" height="140">  |  <img src="./readme_source/team/team4.png" width="140" height="140">  |  
+|:-------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|:---------------------------------------------------------------------:|:---------------------------------------------------------------------:|  
+|                            Back-End (팀장)                            |                                      Back-End                                      |                               Back-End                                |                               Back-End                                |                                                                                                 |
+|                 [이준규](https://github.com/junkyu92)                  |                         [이현정](https://github.com/12hyeon)                          |                  [최승호](https://github.com/madst0614)                  |                  [조현수](https://github.com/HyunsooZo)                  |
 
 </div>
 
 ## 목차
 - [개요](#개요)
+- [프로젝트 일정](#프로젝트-관리-및-일정)
 - [사용기술](#사용기술)
 - [API 문서](#API-문서)
 - [구현 기능](#구현기능)
 - [시스템 구성도](#시스템-구성도)
 - [ERD](#ERD)
-- [TIL 및 회고](#프로젝트-관리-및-회고
-  )
+- [TIL 및 회고](#프로젝트-관리-및-회고)
 
 
 ## 개요
@@ -75,42 +75,6 @@
 ## 구현기능
 
 <details>
-  <summary>회원가입 및 로그인, 로그아웃 기능</summary>
-
-- **구현 기능** <br>
-    - 사용자 회원가입 및 로그인, 로그아웃 기능
-
-- **구현 방법** <br>
-    - 회원가입: 사용자 회원 양식을 받아 DB에 저장
-    - 로그인: 사용자 로그인 양식을 받아 DB에 비밀번호와 비교한 후, Access Token, Refresh Token 발급
-    - 로그아웃: 로그아웃 요청 시, Redis에 저장된 Refresh 토큰을 제거
-</details>
-
-<details>
-  <summary>Spring Security, JWT 토큰</summary>
-
-- **구현 기능** <br>
-    - Spring Security 와 JWT
-
-- **구현 방법** <br>
-    - 사용자 로그인 시, 발급한 Refresh Token을 Redis에 저장
-    - Access Token 재발급 시, Redis에 저장된 사용자 Refresh Token과 비교
-    - 로그아웃 시, Redis에서 발급한 Refresh Token 제거
-</details>
-
-<details>
-  <summary>회원 정보 업데이트 및 조회 기능</summary>
-
-- **구현 기능** <br>
-    - 회원 위치 정보와 점심 제공 여부를 업데이트 기능
-    - 비밀번호를 제외한 회원 정보 조회 기능
-
-- **구현 방법** <br>
-    - 적절한 양식을 통해 회원 위치 정보와 점심 제공 여부를 DB에 업데이트
-    - 회원 정보 조회 요청 시, 발급한 Access Token에서 id를 추출하여 DB 조회
-</details>
-
-<details>
   <summary>위치 기반 맛집 리스트 조회 기능</summary>
 
 - **구현 기능** <br>
@@ -122,6 +86,7 @@
     - 기본 정렬은 거리 가까운 순으로 제공하고, 정렬 조건이 rate일 경우에 평점 높은 순으로 정렬하여 조회합니다.
     - 기본 15개로 페이징되어 제공되고 size, page 파라미터로 페이징 컨트롤 가능합니다.
 </details>
+
 <details>
   <summary>맛집 상세 정보 조회 기능</summary>
 
@@ -133,8 +98,8 @@
     - fetch join을 사용해 한번에 하위 항목까지 모두 조회합니다.
     - Redis를 사용해 캐싱을 적용하였습니다.
     - Redis에 데이터가 존재하면 Redis에서 데이터를 반환하고 존재하지 않으면 DB에서 조회하여 Redis에 저장 후 데이터를 반환합니다.
-
 </details>
+
 <details>
   <summary>리뷰 등록 기능</summary>
 
@@ -145,106 +110,12 @@
     - 평점과 리뷰 내용을 등록합니다.
     - 리뷰 등록시 맛집의 평점과 리뷰수를 업데이트 합니다.
     - 리뷰 등록시 Redis에 캐싱되어있는 해당맛집의 데이터를 삭제하여 최신화되도록 했습니다.
-
-</details>
-
-
-<details>
-  <summary>식당 정보 가져오는 스케쥴링</summary>
-
-- **구현 기능** <br>
-    - 식당 정보 가져오는 스케쥴링 기능 구현
-
-- **구현 방법** <br>
-    - 총 5개 외부 api를 호출합니다.(경기도 일반음식점 _ 패스트푸드,중식,양식,뷔페,일식)
-    - 모든 값을 그대로 저장하되 null값은 데이터 타입에 따라 `데이터없음`, `0` , `0.0` 으로 전처리
-    - 유일키는 식당이름+지번주소 에 공백을 제거하여 사용
-    - 폐업상태 식당의 경우 저장하지 않음.
-    - 매일 `23:59` 스케줄링 동작
-    - 저장시점에 저장 식당 종류, 시간을 로깅
-    - 이미 저장된 식당의 경우 업데이트 진행
-</details>
-<details>
-  <summary>점심추천에 동의한 고객들에게 메세지 전송하는 기능</summary>
-
-- **구현 기능** <br>
-    - 점심추천에 동의한 고객들에게 메세지 전송하는 기능 추가
-
-- **구현 방법** <br>
-    - 점심약속에 동의한 고객들의 목록을 조회
-    - 고객의 좌표에 가까우며 별점이 가장높은 5개 카테고리의 식당 5개씩, 총 25개 조회(`QueryDSL`,하버사인 공식 사용)
-    - 5개씩 한 `embed`에 묶어 `DiscordWebhook` 으로 전송할 메세지 객체 생성
-    - 조회된 고객순서대로 메세지 전송 `DiscordWebhook` 호출
-        - 메시지 예시(각 카테고리별 5개씩)
-          > 오늘의 추천 일식
-          <br><strong>산(뼈찜,뼈곰탕)</strong>
-          <br>경기도 평택시 탄현로1번길 11, 101,102호 (장당동, 엘림하우스)
-          <br> <strong>스고이</strong>
-          <br> 경기도 평택시 고덕갈평7길 10, 1층 (고덕동)
-          <br> <strong>광명회수산</strong>
-          <br> 경기도 평택시 현촌4길 2-33, 101호 (용이동)
-          <br> <strong>오늘은참치</strong>
-          <br> 경기도 시흥시 옥구천동로 449, 부성파스텔아파트 상가동 1층 105호 (정왕동)
-          <br> <strong>장군수산</strong>
-          <br> 경기도 오산시 오산로160번길 5-6, 102,103,104호 (원동, 건정프라자)
-</details>
-<details>
-  <summary>시군구 데이터를 csv파일로 업데이트하는 기능</summary>
-
-- **구현 기능** <br>
-    - 시군구 데이터를 `.csv`파일로 업데이트하는 기능 추가
-    - 시군구 데이터양식 `.csv`파일을 다운로드하는 기능 추가
-
-- **구현 방법** <br>
-    - **파일업로드**<br>
-      a. 각 라인이 null이 아닐때까지 읽어 가며 각 셀을 "," 로 구분하여 배열로 변환<br>
-      b. 배열의 각 요소로 SggLatLon 객체를 생성해 저장<br>
-      c. 예외 발생시 로그 적재
-    - **파일다운로드** <br>
-      a. 도,시,위도,경로 로 이루어진 양식을 생성<br>
-      b. 해당파일을 InputStream으로 변환<br>
-      c. InputStream을 다시 InputStreamResource로 변환<br>
-      d. sgg-template.csv 파일 반환
 </details>
 
 <details>
-  <summary>시군구 목록 조회 기능</summary>
-
-- **구현 기능** <br>
-    - 시군구 목록 조회기능 추가 (캐싱 적용)
-
-- **구현 방법** <br>
-    - 성능 개선 및 동시성 처리 목적으로 캐싱 적용.
-    - 만료일은 1일, 키는 `String`으로 직렬화, 값은 `Json`으로 직렬화
-    - 필요한 메서드에서 어노테이션을 사용해 캐싱 진행
-    - 시군구 목록을 조회해오는 기능을 추가 (캐싱적용 `@Cacheable`,`@CacheEvict`)
-    - 해당 캐시는 1일 유효하며 만약 CSV파일이 업로드 될 시 캐시 초기화
-</details>
-
-
-<details>
-  <summary>CI 구축</summary>
-
-- **구현 기능** <br>
-    - Github Actions를 통해 main의 pr과 push, dev의 pr 생성시 빌드, 테스트 자동화
-
-- **구현 방법**<br>
-![CI1](/readme_source/ci_cd/CI1.png)
-</details>
-
-<details>
-  <summary>CD 구축</summary>
-
-- **구현 기능** <br>
-    - main branch의 push 동작이 발생하면, aws 인증 후 s3를 통해 배포
-
-- **구현 방법**<br>
-    - CodeDeploy를 통해 배포 자동화
-![cd1](/readme_source/ci_cd/CD1.png)
-
-    - 위 설정을 통해 jar 파일 실행
-    ![cd2](/readme_source/ci_cd/CD2.png)
-
+  <summary>테스트코드 작성</summary>
+  
+![img.png](img.png)
 </details>
 
 ## 시스템 구성도
@@ -253,5 +124,71 @@
 ## ERD
 ![ERD](./readme_source/erd/tastyspot.png)
 
+## TIL 및 회고
+- 맛집 상세정보 조회시 캐싱을 적용하기 위해 Redis를 처음으로 사용해보았다. Redis에 저장하고 조회하는 기술 적용은 
+생각보다 간단했지만 데이터를 어떤 형태로 저장할지 데이터가 변경될 때 어떻게 반영할지 전략을 선택하는 것이 어려웠다.
+- 조회 전략은 캐시에 있으면 캐시에서 조회하고 없으면 DB에서 조회해 캐시에 저장하는 Look Aside전략을 사용했고 
+저장형태는 키는 스트링, 데이터는 Json을 스트링으로 변환하여 저장하였다.
+리뷰가 등록될때마다 캐싱된 데이터에도 반영이 되어야 했기 때문에 리뷰가 등록되면 해당 맛집의 캐싱 데이터를 제거하는 방식을 사용했다.
+이 방식은 다음 조회때 DB에서 조회해 Redis에 저장하기 때문에 속도는 조금 느릴 수 있지만 
+Redis와 DB의 데이터 정합성이 가장 좋다고 판단해서 사용했다.
 
+<details>
+  <summary>ISSUE: 테스트코드에서 OneToMany 어노테이션이 작동하지 않는 현상</summary>
 
+- 구글링을 많이 해보았지만 검색으로는 명확한 원인을 찾지 못했고 추측으로는 DB에 등록되기 전 영속성 컨텍스트에서 관리하는 상태에서는 OneToMany
+가 작동하지 않는 것 같다.
+- Transactional propagation을 SUPPORTS로 설정해 OneToMany 문제는 해결했는데 DB에 테스트코드에서 입력한 데이터가
+롤백되지 않고 남아있었다.
+- 테스트용 DB를 따로 생성해서 데이터를 미리 넣어 놓아야 될 것 같아서 테스트코드로 사용하기 적합하지 않다고 판단하여 삭제했다. 
+</details>
+
+<details>
+  <summary>ISSUE: Redis 데이터 저장시 에러1</summary>
+
+- 원인
+  - 자바 LocalDatetime 타입 직렬화시 에러 발생
+  ```
+    "Could not write JSON: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module \"com.fasterxml.jackson.datatype:jackson-datatype-jsr310\" to enable handling (through reference chain: wanted.n.dto.RestaurantDetailResponseDTO[\"reviewList\"]->java.util.ArrayList[0]->wanted.n.dto.RestaurantDetailResponseDTO$ReviewDTO[\"createdAt\"]); nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module \"com.fasterxml.jackson.datatype:jackson-datatype-jsr310\" to enable handling (through reference chain: wanted.n.dto.RestaurantDetailResponseDTO[\"reviewList\"]->java.util.ArrayList[0]->wanted.n.dto.RestaurantDetailResponseDTO$ReviewDTO[\"createdAt\"])"
+  ```
+- 해결 방법
+  - redis config cachemanager 생성부분에 설정 추가
+  ```
+    // 자바 LocalDatetime 직렬화에 필요한 설정 
+    // gradle : implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    
+    // Redis 캐시 설정 구성
+    RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofDays(1)) // 캐시 항목의 만료 기간을 1일로 설정
+            .serializeKeysWith(
+                    RedisSerializationContext.SerializationPair
+                            .fromSerializer(new StringRedisSerializer())) // 캐시 키를 문자열로 직렬화
+            .serializeValuesWith(
+                    RedisSerializationContext.SerializationPair
+                            .fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper))); // 캐시 값을 JSON으로 직렬화
+  ```
+</details>
+
+<details>
+  <summary>ISSUE: Redis 데이터 저장시 에러2</summary>
+
+- 원인
+  - GenericJackson2JsonRedisSerializer에 ObjectMapper설정 후 에러 발생
+  - GenericJackson2JsonRedisSerializer은 기본적으로 직렬화/역직렬화 시 class type 정보를 포함하는데 ObjectMapper를 커스텀하여 설정하면 적용되지 않는다.
+  - 따라서 아래와 같이 기본형이 LinkedHashMap으로 역직렬화를 시도하여 에러가 발생한다.
+  ```
+    class java.util.LinkedHashMap cannot be cast to class wanted.n.dto.RestaurantDetailResponseDTO (java.util.LinkedHashMap is in module java.base of loader 'bootstrap'; wanted.n.dto.RestaurantDetailResponseDTO is in unnamed module of loader 'app')
+  ```
+- 해결 방법
+  - GenericJackson2JsonRedisSerializer에 objectMapper를 사용할 시 필요한 설정 추가
+  - 직렬화/역직렬화 시 class type 정보를 포함하도록 설정
+  ```
+    PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator
+        .builder()
+        .allowIfSubType(Object.class)
+        .build();
+    objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+  ```
+</details>
